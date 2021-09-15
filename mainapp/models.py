@@ -26,6 +26,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+
     class Meta:
         abstract = True
 
@@ -47,9 +48,8 @@ class CartProduct(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    product = models.ForeignKey(Product, verbose_name='Товар', on_delete=models.CASCADE)
     qty = models.PositiveSmallIntegerField(default=1)
-    finalPrice = models.DecimalField(max_digits=9, decimal_places=2, verbose_name='Общая цена')
+    final_price = models.DecimalField(max_digits=9, decimal_places=2, verbose_name='Общая цена')
 
     def __str__(self):
         return 'Продукт: {} ()для корзины'.format(self.product.title)
@@ -60,7 +60,7 @@ class Cart(models.Model):
     owner = models.ForeignKey('Customer', verbose_name='Владелец', on_delete=models.CASCADE)
     products = models.ManyToManyField(CartProduct, blank=True, related_name='related_cart')
     totalProducts = models.PositiveSmallIntegerField(default=0)
-    finalPrice = models.DecimalField(max_digits=9, decimal_places=2, verbose_name='Общая цена')
+    final_price = models.DecimalField(max_digits=9, decimal_places=2, verbose_name='Общая цена')
 
     def __str__(self):
         return str(self.id)
