@@ -6,16 +6,6 @@ from django.db import models
 User = get_user_model()
 
 
-#1 Category
-#2 Product
-#3 CartProduct
-#4 Cart
-#5 Order
-#************
-#6 Customer
-#7 Specification
-
-
 class Category(models.Model):
 
     name = models.CharField(max_length=255, verbose_name='Имя категории')
@@ -67,7 +57,6 @@ class Cart(models.Model):
 
 
 class Customer(models.Model):
-
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     phone = models.CharField(max_length=20, verbose_name='Номер телефона')
     address = models.CharField(max_length=255, verbose_name='Адрес')
@@ -76,3 +65,36 @@ class Customer(models.Model):
         return 'Покупатель {} {}'.format(self.user.first_name, self.user.last_name)
 
 
+class Notebook(Product):
+    diagonal = models.CharField(max_length=255, verbose_name='Диагональ')
+    display_type = models.CharField(max_length=255, verbose_name='Тип дисплея')
+    processor_freq = models.CharField(max_length=255, verbose_name='Частота процессора')
+    ram = models.CharField(max_length=255, verbose_name='Оперативная память')
+    video = models.CharField(max_length=255, verbose_name='Видеокарта')
+    time_without_charge = models.CharField(max_length=255, verbose_name='Время работы аккумулятора')
+
+    def __str__(self):
+        return "{} : {}".format(self.category.name, self.title)
+
+    # def get_absolute_url(self):
+    #     return get_product_url(self, 'product_detail')
+
+
+class Smartphone(Product):
+    diagonal = models.CharField(max_length=255, verbose_name='Диагональ')
+    display_type = models.CharField(max_length=255, verbose_name='Тип дисплея')
+    resolution = models.CharField(max_length=255, verbose_name='Разрешение экрана')
+    accum_volume = models.CharField(max_length=255, verbose_name='Объем батареи')
+    ram = models.CharField(max_length=255, verbose_name='Оперативная память')
+    sd = models.BooleanField(default=True, verbose_name='Наличие SD карты')
+    sd_volume_max = models.CharField(
+        max_length=255, null=True, blank=True, verbose_name='Максимальный объем встраивамой памяти'
+    )
+    main_cam_mp = models.CharField(max_length=255, verbose_name='Главная камера')
+    frontal_cam_mp = models.CharField(max_length=255, verbose_name='Фронтальная камера')
+
+    def __str__(self):
+        return "{} : {}".format(self.category.name, self.title)
+
+    # def get_absolute_url(self):
+    #     return get_product_url(self, 'product_detail')
