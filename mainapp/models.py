@@ -25,11 +25,10 @@ class LatestProductsManager:
             products.extend(model_products)
         if with_respect_to:
             ct_model = ContentType.objects.filter(model=with_respect_to)
-            if ct_model.exists():
-                if with_respect_to in args:
-                    return sorted(
-                        products, key=lambda x: x.__class__.meta.model_name.startswith
-                        (with_respect_to), reverse=True)
+            if ct_model.exists() and with_respect_to in args:
+                return sorted(
+                    products, key=lambda x: x.__class__.meta.model_name.startswith
+                    (with_respect_to), reverse=True)
         return products
 
 
@@ -72,7 +71,7 @@ class CartProduct(models.Model):
     final_price = models.DecimalField(max_digits=9, decimal_places=2, verbose_name='Общая цена')
 
     def __str__(self):
-        return 'Продукт: {} ()для корзины'.format(self.product.title)
+        return f'Продукт: {self.product.title} ()для корзины'
 
 
 class Cart(models.Model):
@@ -92,7 +91,7 @@ class Customer(models.Model):
     address = models.CharField(max_length=255, verbose_name='Адрес')
 
     def __str__(self):
-        return 'Покупатель {} {}'.format(self.user.first_name, self.user.last_name)
+        return f'Покупатель {self.user.first_name} {self.user.last_name}'
 
 
 class Notebook(Product):
@@ -105,7 +104,7 @@ class Notebook(Product):
                                            verbose_name='Время работы аккумулятора')
 
     def __str__(self):
-        return "{} : {}".format(self.category.name, self.title)
+        return f"{self.category.name} : {self.title}"
 
     def get_absolute_url(self):
         return get_product_url(self, 'product_detail')
@@ -126,7 +125,7 @@ class Smartphone(Product):
     frontal_cam_mp = models.CharField(max_length=255, verbose_name='Фронтальная камера')
 
     def __str__(self):
-        return "{} : {}".format(self.category.name, self.title)
+        return f"{self.category.name} : {self.title}"
 
     def get_absolute_url(self):
         return get_product_url(self, 'product_detail')
